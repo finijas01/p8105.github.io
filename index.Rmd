@@ -14,15 +14,15 @@ This course is being offered in the Fall of 2021 through the Biostatistics Depar
 
 * Jeff Goldsmith (Instructor; ajg2202)
 * Margaret Gacheru (Lead TA; mg3861)
-* Tessa Senders (Lead TA; ts3349)
-* Caroline Andy
-* Nikhita Damaraju
-* Rachel Heise
-* Chong Li
-* Zhuohui Liang
-* Phoebe Mo
-* Linh Tran
-* Rio Yan
+* Waveley Qui (In-class TA)
+* Wenhan Bao
+* Yiqun Jin
+* Tanvir Khan
+* Jimmy Kelliher
+* Rachel Li
+* Yangruijue Ma
+* Pooja Mukund
+* Paula Wu
 
 <!--
 ### Calendar
