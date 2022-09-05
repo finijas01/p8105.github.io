@@ -12,11 +12,11 @@ R and RStudio are required for this course, as are several R packages. Additiona
 
 ### Due date
 
-Due: September 13 at 10:00pm. 
+Due: September 8 at 10:00am. 
 
 ### Problem 1
 
-Download and install the latest versions of [R](https://cran.r-project.org) (4.1.1) and [RStudio](https://www.rstudio.com/products/rstudio/download/) (1.4.1717). 
+Download and install the latest versions of [R](https://cran.r-project.org) (4.2.1) and [RStudio](https://www.rstudio.com/products/rstudio/download/) (2022.07.1-554). 
 
 Open RStudio and install several packages (and their dependencies) using the code below:
 
@@ -32,7 +32,7 @@ devtools::install_github("p8105/p8105.datasets")
 
 (Note: on a Mac running OSX, you may need to install the [command line tools](http://osxdaily.com/2014/02/12/install-command-line-tools-mac-os-x/) for these packages to install.)
 
-Upload a screenshot of RStudio that shows your R version, and that you can successfully load the packages `tidyverse` and `knitr`; include your UNI on the command line. Here's an example "solution":
+Upload a screenshot of RStudio that shows your R version, and that you can successfully load the packages `tidyverse` and `knitr`; **include your UNI on the command line**. Here's an example "solution":
 
 <img src="images/homework_0_r.png" style="width:90%">
 
@@ -54,4 +54,8 @@ Here's an example "solution":
 Create a user account on GitHub, and submit your user name using [this google form](https://docs.google.com/forms/d/e/1FAIpQLSeWWe8mTTZqlr4cOmb_jRelfFqDKWYdyxjvE3fWETz6-Y510g/viewform).
 
 It is **very strongly recommended** that you register your account with an educational / academic discount -- later in the semester we will require private repos, which are free under this plan. 
+
+### Problem 4
+
+Join the course [Slack channel](https://join.slack.com/t/p8105datascie-g3l8753/shared_invite/zt-1f682d9bo-DXClkq0C0q2VIOQjS96c~w).
 

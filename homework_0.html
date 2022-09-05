@@ -13,7 +13,7 @@
 
 <title>Homework 0</title>
 
-<script src="site_libs/header-attrs-2.11/header-attrs.js"></script>
+<script src="site_libs/header-attrs-2.16/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
@@ -75,6 +75,7 @@ if (window.hljs) {
 
 
 
+
 <link rel="stylesheet" href="styles.css" type="text/css" />
 
 
@@ -99,6 +100,9 @@ button.code-folding-btn:focus {
 }
 summary {
   display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
 }
 pre code {
   padding: 0;
@@ -156,11 +160,15 @@ $(document).ready(function () {
     href = "index.html";
   var menuAnchor = $('a[href="' + href + '"]');
 
-  // mark it active
-  menuAnchor.tab('show');
-
-  // if it's got a parent navbar menu mark it active as well
-  menuAnchor.closest('li.dropdown').addClass('active');
+  // mark the anchor link active (and if it's in a dropdown, also mark that active)
+  var dropdown = menuAnchor.closest('li.dropdown');
+  if (window.bootstrap) { // Bootstrap 4+
+    menuAnchor.addClass('active');
+    dropdown.find('> .dropdown-toggle').addClass('active');
+  } else { // Bootstrap 3
+    menuAnchor.parent().addClass('active');
+    dropdown.addClass('active');
+  }
 
   // Navbar adjustments
   var navHeight = $(".navbar").first().height() + 15;
@@ -324,7 +332,7 @@ div.tocify {
 <div class="navbar navbar-default  navbar-fixed-top" role="navigation">
   <div class="container">
     <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
@@ -340,7 +348,7 @@ div.tocify {
   <a href="schedule.html">Schedule</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Topics
      
     <span class="caret"></span>
@@ -376,7 +384,7 @@ div.tocify {
   </ul>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Datasets
      
     <span class="caret"></span>
@@ -433,16 +441,23 @@ div.tocify {
 
 <div id="context" class="section level3">
 <h3>Context</h3>
-<p>R and RStudio are required for this course, as are several R packages. Additionally, we will make extensive use of Git and Github. The goal of this homework assignment is to ensure that you have installed relevant software and packages.</p>
+<p>R and RStudio are required for this course, as are several R
+packages. Additionally, we will make extensive use of Git and Github.
+The goal of this homework assignment is to ensure that you have
+installed relevant software and packages.</p>
 </div>
 <div id="due-date" class="section level3">
 <h3>Due date</h3>
-<p>Due: September 13 at 10:00pm.</p>
+<p>Due: September 8 at 10:00am.</p>
 </div>
 <div id="problem-1" class="section level3">
 <h3>Problem 1</h3>
-<p>Download and install the latest versions of <a href="https://cran.r-project.org">R</a> (4.1.1) and <a href="https://www.rstudio.com/products/rstudio/download/">RStudio</a> (1.4.1717).</p>
-<p>Open RStudio and install several packages (and their dependencies) using the code below:</p>
+<p>Download and install the latest versions of <a
+href="https://cran.r-project.org">R</a> (4.2.1) and <a
+href="https://www.rstudio.com/products/rstudio/download/">RStudio</a>
+(2022.07.1-554).</p>
+<p>Open RStudio and install several packages (and their dependencies)
+using the code below:</p>
 <pre class="r"><code>install.packages(
   c(&quot;tidyverse&quot;, &quot;knitr&quot;, &quot;rmarkdown&quot;, &quot;janitor&quot;, &quot;broom&quot;, &quot;here&quot;, &quot;readxl&quot;, 
     &quot;haven&quot;, &quot;rnoaa&quot;, &quot;ggridges&quot;, &quot;ggthemes&quot;, &quot;leaflet&quot;, &quot;viridis&quot;, &quot;skimr&quot;, 
@@ -450,16 +465,25 @@ div.tocify {
     &quot;tidytext&quot;, &quot;shiny&quot;, &quot;patchwork&quot;, &quot;glmnet&quot;))
 
 devtools::install_github(&quot;p8105/p8105.datasets&quot;)</code></pre>
-<p>(Note: on a Mac running OSX, you may need to install the <a href="http://osxdaily.com/2014/02/12/install-command-line-tools-mac-os-x/">command line tools</a> for these packages to install.)</p>
-<p>Upload a screenshot of RStudio that shows your R version, and that you can successfully load the packages <code>tidyverse</code> and <code>knitr</code>; include your UNI on the command line. Here’s an example “solution”:</p>
+<p>(Note: on a Mac running OSX, you may need to install the <a
+href="http://osxdaily.com/2014/02/12/install-command-line-tools-mac-os-x/">command
+line tools</a> for these packages to install.)</p>
+<p>Upload a screenshot of RStudio that shows your R version, and that
+you can successfully load the packages <code>tidyverse</code> and
+<code>knitr</code>; <strong>include your UNI on the command
+line</strong>. Here’s an example “solution”:</p>
 <p><img src="images/homework_0_r.png" style="width:90%"></p>
 </div>
 <div id="problem-2" class="section level3">
 <h3>Problem 2</h3>
-<p>Install Git on the machine you’ll use for work in this course. There are several installation approaches; I suggest you follow <a href="http://happygitwithr.com/install-git.html">this guide</a>.</p>
-<p>Upload a screenshot of RStudio’s terminal pane that shows a successful execution of:</p>
+<p>Install Git on the machine you’ll use for work in this course. There
+are several installation approaches; I suggest you follow <a
+href="http://happygitwithr.com/install-git.html">this guide</a>.</p>
+<p>Upload a screenshot of RStudio’s terminal pane that shows a
+successful execution of:</p>
 <ul>
-<li><code>which git</code> or <code>git --version</code> (for OSX / Mac)</li>
+<li><code>which git</code> or <code>git --version</code> (for OSX /
+Mac)</li>
 <li><code>where git</code> (for Windows / PC).</li>
 </ul>
 <p>Here’s an example “solution”:</p>
@@ -467,8 +491,19 @@ devtools::install_github(&quot;p8105/p8105.datasets&quot;)</code></pre>
 </div>
 <div id="problem-3" class="section level3">
 <h3>Problem 3</h3>
-<p>Create a user account on GitHub, and submit your user name using <a href="https://docs.google.com/forms/d/e/1FAIpQLSeWWe8mTTZqlr4cOmb_jRelfFqDKWYdyxjvE3fWETz6-Y510g/viewform">this google form</a>.</p>
-<p>It is <strong>very strongly recommended</strong> that you register your account with an educational / academic discount – later in the semester we will require private repos, which are free under this plan.</p>
+<p>Create a user account on GitHub, and submit your user name using <a
+href="https://docs.google.com/forms/d/e/1FAIpQLSeWWe8mTTZqlr4cOmb_jRelfFqDKWYdyxjvE3fWETz6-Y510g/viewform">this
+google form</a>.</p>
+<p>It is <strong>very strongly recommended</strong> that you register
+your account with an educational / academic discount – later in the
+semester we will require private repos, which are free under this
+plan.</p>
+</div>
+<div id="problem-4" class="section level3">
+<h3>Problem 4</h3>
+<p>Join the course <a
+href="https://join.slack.com/t/p8105datascie-g3l8753/shared_invite/zt-1f682d9bo-DXClkq0C0q2VIOQjS96c~w">Slack
+channel</a>.</p>
 </div>
 
 <br><br>
