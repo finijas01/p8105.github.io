@@ -1,3 +1,0 @@
-Loading example.package
-Testing example.package
-sim_bern_mean: .....
