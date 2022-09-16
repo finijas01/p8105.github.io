@@ -301,4 +301,4 @@ There are also some longer or more advanced references. I'm noting these so you 
 * Andrew Jaffe and John Muschelli's [Introduction to R for Public Health Researchers](http://aejaffe.com/summerR_2016/)
 * Cosma Shalizi and Andrew Thomas' [Statistical Computing 36-350: Beginning to Advanced Techniques in R](https://www.stat.cmu.edu/~cshalizi/statcomp/14/)
 
-The code that I produced working examples in lecture is [here](https://github.com/p8105/building_blocks).
+The code that I produced working examples in lecture is [here](https://github.com/jeff-goldsmith/example_repo).

@@ -13,7 +13,7 @@
 
 <title>Git and GitHub</title>
 
-<script src="site_libs/header-attrs-2.11/header-attrs.js"></script>
+<script src="site_libs/header-attrs-2.16/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
@@ -75,6 +75,7 @@ if (window.hljs) {
 
 
 
+
 <link rel="stylesheet" href="styles.css" type="text/css" />
 
 
@@ -99,6 +100,9 @@ button.code-folding-btn:focus {
 }
 summary {
   display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
 }
 pre code {
   padding: 0;
@@ -156,11 +160,15 @@ $(document).ready(function () {
     href = "index.html";
   var menuAnchor = $('a[href="' + href + '"]');
 
-  // mark it active
-  menuAnchor.tab('show');
-
-  // if it's got a parent navbar menu mark it active as well
-  menuAnchor.closest('li.dropdown').addClass('active');
+  // mark the anchor link active (and if it's in a dropdown, also mark that active)
+  var dropdown = menuAnchor.closest('li.dropdown');
+  if (window.bootstrap) { // Bootstrap 4+
+    menuAnchor.addClass('active');
+    dropdown.find('> .dropdown-toggle').addClass('active');
+  } else { // Bootstrap 3
+    menuAnchor.parent().addClass('active');
+    dropdown.addClass('active');
+  }
 
   // Navbar adjustments
   var navHeight = $(".navbar").first().height() + 15;
@@ -324,7 +332,7 @@ div.tocify {
 <div class="navbar navbar-default  navbar-fixed-top" role="navigation">
   <div class="container">
     <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
@@ -340,7 +348,7 @@ div.tocify {
   <a href="schedule.html">Schedule</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Topics
      
     <span class="caret"></span>
@@ -376,7 +384,7 @@ div.tocify {
   </ul>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Datasets
      
     <span class="caret"></span>
@@ -431,12 +439,14 @@ div.tocify {
 </div>
 
 
-<p>This is the third module in the <a href="topic_building_blocks.html">Building blocks</a> topic.</p>
+<p>This is the third module in the <a
+href="topic_building_blocks.html">Building blocks</a> topic.</p>
 <div id="overview" class="section level2 tabset tabset-pills">
 <h2 class="tabset tabset-pills">Overview</h2>
 <div id="learning-objectives" class="section level3">
 <h3>Learning Objectives</h3>
-<p>Git is awesome … but it isn’t easy at first. We’ll look at how to use git and github in a data science workflow.</p>
+<p>Git is awesome … but it isn’t easy at first. We’ll look at how to use
+git and github in a data science workflow.</p>
 </div>
 <div id="slide-deck" class="section level3">
 <h3>Slide Deck</h3>
@@ -448,7 +458,11 @@ div.tocify {
     class="video"> </iframe></p>
 </div>
 <div style="margin-bottom:5px">
-<strong> <a href="https://speakerdeck.com/jeffgoldsmith/p8105-git-and-github" title="Git and GitHub" target="_blank">Git and GitHub</a> </strong> from <strong><a href="https://speakerdeck.com/jeffgoldsmith" target="_blank">Jeff Goldsmith</a></strong>.
+<strong>
+<a href="https://speakerdeck.com/jeffgoldsmith/p8105-git-and-github" title="Git and GitHub" target="_blank">Git
+and GitHub</a> </strong> from
+<strong><a href="https://speakerdeck.com/jeffgoldsmith" target="_blank">Jeff
+Goldsmith</a></strong>.
 </div>
 <p><br></p>
 <hr />
@@ -465,42 +479,82 @@ div.tocify {
 </div>
 <div id="example" class="section level2">
 <h2>Example</h2>
-<p>In the following, I’m assuming some important set-up steps are already done – if you were successful in <a href="homework_0.html">Homework 0</a>, you should be fine. To follow along, you’ll need to have git installed and a GitHub account. In some places I prefer to use a stand-alone git client (my preference is <a href="https://www.sourcetreeapp.com">Sourcetree</a>), but you can get by pretty well with RStudio’s built-in tools. Help for git installation and troubleshooting can be found in Chapters 4-9 of <a href="http://happygitwithr.com">this book</a> by Jenny Bryan (note – all the rest of those chapters are also great).</p>
-<p>For this example, I’m going to re-do stuff from <a href="writing_with_data.html">Writing with Data</a>.</p>
+<p>In the following, I’m assuming some important set-up steps are
+already done – if you were successful in <a
+href="homework_0.html">Homework 0</a>, you should be fine. To follow
+along, you’ll need to have git installed and a GitHub account. In some
+places I prefer to use a stand-alone git client (my preference is <a
+href="https://www.sourcetreeapp.com">Sourcetree</a>), but you can get by
+pretty well with RStudio’s built-in tools. Help for git installation and
+troubleshooting can be found in Chapters 4-9 of <a
+href="http://happygitwithr.com">this book</a> by Jenny Bryan (note – all
+the rest of those chapters are also great).</p>
+<p>For this example, I’m going to re-do stuff from <a
+href="writing_with_data.html">Writing with Data</a>.</p>
 <div id="new-workflow-github-first" class="section level3">
 <h3>New workflow – GitHub first</h3>
-<p>We talked about a good workflow in <a href="writing_with_data.html">Writing with Data</a>, with a focus on R Projects for organization and R Markdown for reproducibility. We’re adding version control using git to that workflow; git is useful by itself, and is also a popular tool to collaboration. There are a couple of ways include git in our workflow, but the one we’ll start with is:</p>
+<p>We talked about a good workflow in <a
+href="writing_with_data.html">Writing with Data</a>, with a focus on R
+Projects for organization and R Markdown for reproducibility. We’re
+adding version control using git to that workflow; git is useful by
+itself, and is also a popular tool to collaboration. There are a couple
+of ways include git in our workflow, but the one we’ll start with
+is:</p>
 <ul>
 <li><strong>Create a GitHub repo with an informative name</strong></li>
-<li>Create a linked R Project using File &gt; New Project <strong>&gt; Version Control</strong></li>
-<li>Keep everything related to the analysis – data inputs, scripts, reports, output – in the directory, and use R Markdown as much as possible</li>
-<li><strong>Keep track of changes using version control (save, commit, push)</strong></li>
+<li>Create a linked R Project using File &gt; New Project <strong>&gt;
+Version Control</strong></li>
+<li>Keep everything related to the analysis – data inputs, scripts,
+reports, output – in the directory, and use R Markdown as much as
+possible</li>
+<li><strong>Keep track of changes using version control (save, commit,
+push)</strong></li>
 <li>Periodically check for reproducibility of the analysis</li>
 </ul>
 <p>The bold steps are new.</p>
 <p>Walking through step-by-step, create a new GitHub repo online:</p>
 <p><img src="images/git_add_gh_repo.png" style="width:80%"></p>
-<p>On the next page, choose your repo name, set to “Public”, initialize with a README, and create the repo</p>
+<p>On the next page, choose your repo name, set to “Public”, initialize
+with a README, and create the repo</p>
 <p><img src="images/git_create_gh_repo.png" style="width:70%"></p>
 <p>Once you have your GH repo, find the link to clone:</p>
 <p><img src="images/git_repo_url.png" style="width:80%"></p>
-<p>Now, in RStudio, start a new Project using File &gt; New Project &gt; Version Control.</p>
+<p>Now, in RStudio, start a new Project using File &gt; New Project &gt;
+Version Control.</p>
 <ul>
 <li>Provide the repository URL (copy from GitHub)</li>
 <li>Assign the Project a name (usually the same as the GH repo)</li>
 <li>Put the Project in a reasonable place on your computer</li>
 </ul>
-<p>Once you’ve done this, a few things will happen. Most obviously, you now have a Project with the name you chose, and that project contains the .Rproj file, your README.md from GitHub, and a <code>.gitignore</code> file (by default, this will ignore <code>.Rproj.user</code>, <code>.Rhistory</code>, <code>.RData</code>, and <code>.Ruserdata</code>). Less obviously, git is now watching your directory and will keep track of changes across versions of your work, and there’s a new “Git” tab in the top-right RStudio pane.</p>
+<p>Once you’ve done this, a few things will happen. Most obviously, you
+now have a Project with the name you chose, and that project contains
+the .Rproj file, your README.md from GitHub, and a
+<code>.gitignore</code> file (by default, this will ignore
+<code>.Rproj.user</code>, <code>.Rhistory</code>, <code>.RData</code>,
+and <code>.Ruserdata</code>). Less obviously, git is now watching your
+directory and will keep track of changes across versions of your work,
+and there’s a new “Git” tab in the top-right RStudio pane.</p>
 <p>Optionally, you can add the R Project to a separate git client.</p>
-<p><strong><em>Learning Assessment:</em></strong> Follow the process above to create your own repo on GH and clone it as an R Project using RStudio.</p>
+<p><strong><em>Learning Assessment:</em></strong> Follow the process
+above to create your own repo on GH and clone it as an R Project using
+RStudio.</p>
 </div>
 <div id="commit-to-git" class="section level3">
 <h3>Commit to git</h3>
-<p>At this point, I haven’t done much “work” – I’ve created a repo and set up a project. Although I haven’t really done much yet I’m going to make an initial commit with the Project set-up, which is a nice starting point.</p>
+<p>At this point, I haven’t done much “work” – I’ve created a repo and
+set up a project. Although I haven’t really done much yet I’m going to
+make an initial commit with the Project set-up, which is a nice starting
+point.</p>
 <p><img src="images/git_initial_commit.png" style="width:80%"></p>
-<p>Now I’ll start actually doing stuff. As I noted above, I’m going to repeat some of <a href="writing_with_data.html">Writing with Data</a> – my goal is to focus on the git side of things without distractions from new code. As a first step, I’ll add an R Markdown template (download <a href="resources/template.Rmd">here</a>), knit it, and commit.</p>
+<p>Now I’ll start actually doing stuff. As I noted above, I’m going to
+repeat some of <a href="writing_with_data.html">Writing with Data</a> –
+my goal is to focus on the git side of things without distractions from
+new code. As a first step, I’ll add an R Markdown template (download <a
+href="resources/template.Rmd">here</a>), knit it, and commit.</p>
 <p><img src="images/git_second_commit.png" style="width:80%"></p>
-<p>Next I’ll add an R Markdown file looking at basic plots (shown below; download <a href="resources/rmd_basic_plots.Rmd">here</a>) to my repository / directory.</p>
+<p>Next I’ll add an R Markdown file looking at basic plots (shown below;
+download <a href="resources/rmd_basic_plots.Rmd">here</a>) to my
+repository / directory.</p>
 <pre><code>---
 title: &quot;Basic Plots&quot;
 author: &quot;Jeff Goldsmith&quot;
@@ -540,75 +594,175 @@ ggplot(plot_df, aes(x = x, y = y)) + geom_point()
 <p><img src="images/git_third_commit.png" style="width:80%"></p>
 <p>Next I’ll update my README.md file. And commit.</p>
 <p><img src="images/git_fourth_commit.png" style="width:80%"></p>
-<p>How frequently you commit is, to some extent, a matter of taste. Roughly speaking, I commit after changes that are big enough to that I’d want a reminder about what they contain in six months. Also, after a while, committing becomes almost second-nature (or at least isn’t something that takes a lot of time or energy) and that makes it easier to commit often.</p>
-<p>The commit messages and git diffs are key features, and will help you understand (or remember) what changed at each stage – commit messages should summarize main changes (and maybe give some details), and git diffs will show what files were added / edited and what the line-by-line changes were.</p>
-<p><strong><em>Learning Assessment:</em></strong> Make some changes to your repo (edit your README, add a file, etc) and commit those changes.</p>
+<p>How frequently you commit is, to some extent, a matter of taste.
+Roughly speaking, I commit after changes that are big enough to that I’d
+want a reminder about what they contain in six months. Also, after a
+while, committing becomes almost second-nature (or at least isn’t
+something that takes a lot of time or energy) and that makes it easier
+to commit often.</p>
+<p>The commit messages and git diffs are key features, and will help you
+understand (or remember) what changed at each stage – commit messages
+should summarize main changes (and maybe give some details), and git
+diffs will show what files were added / edited and what the line-by-line
+changes were.</p>
+<p><strong><em>Learning Assessment:</em></strong> Make some changes to
+your repo (edit your README, add a file, etc) and commit those
+changes.</p>
 </div>
 <div id="push-to-github" class="section level3">
 <h3>Push to GitHub</h3>
-<p>Git is useful as a version control system all by itself, but it is especially powerful when combined with GitHub. This combination relies on pairing your “local repository” with a “remote repository” – local is on your computer, remote is in the cloud (i.e. on GitHub’s servers). Fortunately, in the “GitHub First” workflow, the local / remote pairing is basically done for you. So, the next step is to “push to remote”, a step that drives home the difference between local and remote repositories: you can make local changes and commits, but the remote repository won’t know about them until you push.</p>
+<p>Git is useful as a version control system all by itself, but it is
+especially powerful when combined with GitHub. This combination relies
+on pairing your “local repository” with a “remote repository” – local is
+on your computer, remote is in the cloud (i.e. on GitHub’s servers).
+Fortunately, in the “GitHub First” workflow, the local / remote pairing
+is basically done for you. So, the next step is to “push to remote”, a
+step that drives home the difference between local and remote
+repositories: you can make local changes and commits, but the remote
+repository won’t know about them until you push.</p>
 <p><img src="images/git_push_to_remote.png" style="width:80%"></p>
 <p>Once you’ve pushed, all your commits are viewable on GitHub.</p>
 <p><img src="images/git_gh_after_push.png" style="width:80%"></p>
-<p><strong>Note:</strong> GitHub has a variety of security features. One that will be relevant right now is the use of Personal Access Tokens rather than passwords for pushing to and pulling from remote repositories. There are several <a href="https://stackoverflow.com/questions/68775869/support-for-password-authentication-was-removed-please-use-a-personal-access-to">useful</a> <a href="https://usethis.r-lib.org/articles/articles/git-credentials.html">guides</a> to get help with this. Once you’ve set up your PAT and try to push, RStudio may prompt you for your GitHub username and password; provide your new PAT, and you’re be all set. Fortunately, you should only have to do this once, and the credentials will be stored for later uses.</p>
-<p>GitHub has a lot of features that help as projects grow: issue trackers function as collaborative “to-do” lists, the built-in message system helps coordinate with collaborators, and others. You can also see what other people are working on, follow repos or developers, create your own versions of existing repos, and do other exciting stuff!</p>
-<p><strong><em>Learning Assessment:</em></strong> Make sure you can push your commits to remote!</p>
+<p><strong>Note:</strong> GitHub has a variety of security features. One
+that will be relevant right now is the use of Personal Access Tokens
+rather than passwords for pushing to and pulling from remote
+repositories. There are several <a
+href="https://stackoverflow.com/questions/68775869/support-for-password-authentication-was-removed-please-use-a-personal-access-to">useful</a>
+<a
+href="https://usethis.r-lib.org/articles/articles/git-credentials.html">guides</a>
+to get help with this. Once you’ve set up your PAT and try to push,
+RStudio may prompt you for your GitHub username and password; provide
+your new PAT, and you’re be all set. Fortunately, you should only have
+to do this once, and the credentials will be stored for later uses.</p>
+<p>GitHub has a lot of features that help as projects grow: issue
+trackers function as collaborative “to-do” lists, the built-in message
+system helps coordinate with collaborators, and others. You can also see
+what other people are working on, follow repos or developers, create
+your own versions of existing repos, and do other exciting stuff!</p>
+<p><strong><em>Learning Assessment:</em></strong> Make sure you can push
+your commits to remote!</p>
 </div>
 <div id="md-files-on-github" class="section level3">
 <h3>.md Files on GitHub</h3>
-<p>Markdown files (not <em>R</em> Markdown, just .md files) are rendered in an HTML-like way on GitHub. We already took advantage of this, in fact, in the README.md file – this has particular prominence on a repo’s GH page, but other .md files are rendered similarly.</p>
-<p>Our use of R Markdown to write reproducible reports makes the treatment of .md files on GH especially nice. Recall that we used <code>knitr::knit</code> to render a .Rmd file to a .md file, which in turn was rendered to another format (.html, .pdf, .docx). By using the <code>github_document</code> output format, we can instead produce .md files (there are, of course, other ways to achieve the same end). This is great, because the report – including text, code results, and figures – can be produced in a way that is easily viewable on GitHub!</p>
-<p><strong><em>Learning Assessment:</em></strong> Change one (or both) of your .Rmd files to output <code>github_document</code>s. Re-knit, commit, and push – and then view the results on GitHub.</p>
+<p>Markdown files (not <em>R</em> Markdown, just .md files) are rendered
+in an HTML-like way on GitHub. We already took advantage of this, in
+fact, in the README.md file – this has particular prominence on a repo’s
+GH page, but other .md files are rendered similarly.</p>
+<p>Our use of R Markdown to write reproducible reports makes the
+treatment of .md files on GH especially nice. Recall that we used
+<code>knitr::knit</code> to render a .Rmd file to a .md file, which in
+turn was rendered to another format (.html, .pdf, .docx). By using the
+<code>github_document</code> output format, we can instead produce .md
+files (there are, of course, other ways to achieve the same end). This
+is great, because the report – including text, code results, and figures
+– can be produced in a way that is easily viewable on GitHub!</p>
+<p><strong><em>Learning Assessment:</em></strong> Change one (or both)
+of your .Rmd files to output <code>github_document</code>s. Re-knit,
+commit, and push – and then view the results on GitHub.</p>
 </div>
 <div id="collaborating-via-github" class="section level3">
 <h3>Collaborating via GitHub</h3>
-<p>Sharing repositories via GitHub makes it possible to collaborate in a clear, rigorous way. As each person makes changes:</p>
+<p>Sharing repositories via GitHub makes it possible to collaborate in a
+clear, rigorous way. As each person makes changes:</p>
 <ul>
-<li>written commit messages let others know what has changed and why</li>
-<li>line-by-line comparisons (additions and deletions) show exactly what was changed.</li>
+<li>written commit messages let others know what has changed and
+why</li>
+<li>line-by-line comparisons (additions and deletions) show exactly what
+was changed.</li>
 </ul>
-<p>This is great if you’re working in a team, or if you are considering future-you as a collaborator.</p>
-<p>For the repository holding this example, I’ll add Angel as a collaborator. Once he’s been added, he’s going to add a histogram of <code>y</code> to our basic plot RMD. He’ll commit and push; I’ll relax until he’s done, then pull his changes from the remote repository to my local repository. Those changes will appear in my local repository, and a summary of the changes are in my git history.</p>
+<p>This is great if you’re working in a team, or if you are considering
+future-you as a collaborator.</p>
+<p>For the repository holding this example, I’ll add Angel as a
+collaborator. Once he’s been added, he’s going to add a histogram of
+<code>y</code> to our basic plot RMD. He’ll commit and push; I’ll relax
+until he’s done, then pull his changes from the remote repository to my
+local repository. Those changes will appear in my local repository, and
+a summary of the changes are in my git history.</p>
 <p><img src="images/git_collab_commit.png" style="width:80%"></p>
-<p>Of course, team members may want to work in parallel. As an example, I’ll edit the README a bit and Angel will edit the template RMD file. Once I’ve written my code, I’m going to commit; pull to see if there are any changes in the remote repository; and then push everything.</p>
+<p>Of course, team members may want to work in parallel. As an example,
+I’ll edit the README a bit and Angel will edit the template RMD file.
+Once I’ve written my code, I’m going to commit; pull to see if there are
+any changes in the remote repository; and then push everything.</p>
 <p><img src="images/git_parallel_code.png" style="width:80%"></p>
-<p>This process (commit &gt; pull &gt; push) can help keep you out of trouble, although other approaches are possible.</p>
+<p>This process (commit &gt; pull &gt; push) can help keep you out of
+trouble, although other approaches are possible.</p>
 </div>
 <div id="conflicts" class="section level3">
 <h3>Conflicts</h3>
-<p>When we’re working in parallel on non-overlapping elements, everything is pretty smooth. I can edit and commit, and so can Angel; as we cycle through the commit &gt; pull &gt; push cycle, git knows we’re not editing the same stuff and keeps track of the changes.</p>
-<p>We can run into issues when we both edit the same thing – suppose, for example, we both try to update the line describing the purpose of <code>basic_plots.Rmd</code>. If he commits and pushes before I do, when I commit and pull I’ll see the following:</p>
+<p>When we’re working in parallel on non-overlapping elements,
+everything is pretty smooth. I can edit and commit, and so can Angel; as
+we cycle through the commit &gt; pull &gt; push cycle, git knows we’re
+not editing the same stuff and keeps track of the changes.</p>
+<p>We can run into issues when we both edit the same thing – suppose,
+for example, we both try to update the line describing the purpose of
+<code>basic_plots.Rmd</code>. If he commits and pushes before I do, when
+I commit and pull I’ll see the following:</p>
 <p><img src="images/git_conflict_notice.png" style="width:80%"></p>
-<p>We’ve both written text in the same place, and have to make a decision about which to keep. You have a couple of options: one is to open the file in question, go through each conflict (which will be indicated in text), fix the text to your liking and remove all the markers that indicate the conflicts. We can also do this with the help of a merge tool, which will show where differences are and allow us to make a choice about which to keep.</p>
+<p>We’ve both written text in the same place, and have to make a
+decision about which to keep. You have a couple of options: one is to
+open the file in question, go through each conflict (which will be
+indicated in text), fix the text to your liking and remove all the
+markers that indicate the conflicts. We can also do this with the help
+of a merge tool, which will show where differences are and allow us to
+make a choice about which to keep.</p>
 <p><img src="images/git_conflict_tool.png" style="width:80%"></p>
-<p>After resolving conflicts, I should commit the changes and push the new unified version to the remote repository.</p>
-<p>Merge conflicts are a fact of life in collaborative work, and you probably run into them more often than you’d like to admit (e.g. “Jeff’s Conflicted Copy” in Dropbox, or parallel versions of Word documents). Git can seem like it makes this worse, but that’s mostly because it’s new and scary, and it forces you to address conflicts as they arise in a structured way rather than ignoring issues / managing them in an ad-hoc way.</p>
-<p>That said, try to coordinate with teammates so it’s clear who is working on what and when they’re doing it.</p>
+<p>After resolving conflicts, I should commit the changes and push the
+new unified version to the remote repository.</p>
+<p>Merge conflicts are a fact of life in collaborative work, and you
+probably run into them more often than you’d like to admit (e.g. “Jeff’s
+Conflicted Copy” in Dropbox, or parallel versions of Word documents).
+Git can seem like it makes this worse, but that’s mostly because it’s
+new and scary, and it forces you to address conflicts as they arise in a
+structured way rather than ignoring issues / managing them in an ad-hoc
+way.</p>
+<p>That said, try to coordinate with teammates so it’s clear who is
+working on what and when they’re doing it.</p>
 </div>
 <div id="new-workflow-project-first" class="section level3">
 <h3>New workflow – Project first</h3>
-<p>The “GitHub first” workflow works well, but it’s not the only way to add version control to an R Project. An alternative is “Project first”:</p>
+<p>The “GitHub first” workflow works well, but it’s not the only way to
+add version control to an R Project. An alternative is “Project
+first”:</p>
 <ul>
-<li>Create an R Project with a reasonable name and path (via <code>usethis::create_project()</code>)</li>
-<li><strong>Turn on version control for the project using git</strong> (via <code>usethis::use_git()</code>)</li>
-<li><strong>Optionally, create remote repository</strong> (via <code>usethis::use_github()</code>)</li>
-<li>Keep everything related to the analysis – data inputs, scripts, reports, output – in the directory, and use R Markdown as much as possible</li>
-<li><strong>Keep track of changes using version control (save, commit, push)</strong></li>
+<li>Create an R Project with a reasonable name and path (via
+<code>usethis::create_project()</code>)</li>
+<li><strong>Turn on version control for the project using git</strong>
+(via <code>usethis::use_git()</code>)</li>
+<li><strong>Optionally, create remote repository</strong> (via
+<code>usethis::use_github()</code>)</li>
+<li>Keep everything related to the analysis – data inputs, scripts,
+reports, output – in the directory, and use R Markdown as much as
+possible</li>
+<li><strong>Keep track of changes using version control (save, commit,
+push)</strong></li>
 <li>Periodically check for reproducibility of the analysis</li>
 </ul>
-<p>Bold steps are new with respect to the workflow in <a href="writing_with_data.html">Writing with Data</a>. This workflow is useful if you don’t intend for your repo to end up “in the cloud”, whic his sometimes the case, but means you have to take steps to create the remote repository.</p>
+<p>Bold steps are new with respect to the workflow in <a
+href="writing_with_data.html">Writing with Data</a>. This workflow is
+useful if you don’t intend for your repo to end up “in the cloud”, whic
+his sometimes the case, but means you have to take steps to create the
+remote repository.</p>
 </div>
 </div>
 <div id="other-materials" class="section level2">
 <h2>Other materials</h2>
-<p>There’s a lot of stuff to help with git in general, and with git for R in particular. This is a non-exhaustive list:</p>
+<p>There’s a lot of stuff to help with git in general, and with git for
+R in particular. This is a non-exhaustive list:</p>
 <ul>
-<li>Jenny Bryan’s <a href="https://peerj.com/preprints/3159/">article</a> “Excuse me, do you have a moment to talk about version control?” is excellent</li>
-<li>Jenny Bryan’s <a href="http://happygitwithr.com">book</a> (same as the link above) is really helpful, and has chapters on several workflows</li>
-<li>The <a href="https://guides.github.com/activities/hello-world/">GitHub</a> guide</li>
-<li>Version control with <a href="https://support.rstudio.com/hc/en-us/articles/200532077-Version-Control-with-Git-and-SVN">RStudio</a></li>
+<li>Jenny Bryan’s <a
+href="https://peerj.com/preprints/3159/">article</a> “Excuse me, do you
+have a moment to talk about version control?” is excellent</li>
+<li>Jenny Bryan’s <a href="http://happygitwithr.com">book</a> (same as
+the link above) is really helpful, and has chapters on several
+workflows</li>
+<li>The <a
+href="https://guides.github.com/activities/hello-world/">GitHub</a>
+guide</li>
+<li>Version control with <a
+href="https://support.rstudio.com/hc/en-us/articles/200532077-Version-Control-with-Git-and-SVN">RStudio</a></li>
 </ul>
-<p>The GitHub repository I created working through this example is <a href="https://github.com/jeff-goldsmith/p8105_example/">here</a>.</p>
+<p>The GitHub repository I created working through this example is <a
+href="https://github.com/jeff-goldsmith/example_repo">here</a>.</p>
 </div>
 
 <br><br>
