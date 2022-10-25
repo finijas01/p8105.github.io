@@ -75,7 +75,7 @@ library(p8105.datasets)
 library(plotly)
 ```
 
-We're going to focus on the [Airbnb](dataset_airbnb.html) data for this topic. The code below extracts what we need right now; specifically, we select only a few of the variables, filter to include a subset of the data, and down-sample for computational efficiency. 
+We're going to focus on the [Airbnb](dataset_airbnb.html) data for this topic. The code below extracts what we need right now; specifically, we select only a few of the variables and filter to include a subset of the data. In part, this makes sure that the resulting dataset and plots are computationally feasible -- for large datasets, you may need to downsample.
 
 ```{r import_data}
 data(nyc_airbnb)
