@@ -187,7 +187,7 @@ sim_data %>%
   )
 ```
 
-You should take a few minutes to examine this code -- make a plot of the simulated data to make sure it "makes sense", take a look at the result of the `lm` call, etc. 
+You should take a few minutes to examine this code -- make a plot of the simulated data to make sure it "makes sense", take a look at the result of computing the mean and standard deviation, etc. 
 
 Once you're satisfied, it's time to wrap things up in a function. I'd like to be able to change the sample size and parameters, so those will be my *arguments*; the code that simulates data and computes the sample mean and SD go in the *body*; and the *return* statement should include the estimates. A function that does all this, using default values for the mean and standard deviation, is below. 
 
@@ -276,7 +276,9 @@ read_page_reviews <- function(url) {
     html_nodes(".review-text-content span") %>%
     html_text() %>% 
     str_replace_all("\n", "") %>% 
-    str_trim()
+    str_trim() %>% 
+    str_subset("The media could not be loaded.", negate = TRUE) %>% 
+    str_subset("^$", negate = TRUE)
   
   tibble(
     title = review_titles,
